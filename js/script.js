@@ -14,6 +14,7 @@ document.getElementById('todoForm')
         saveItem(todoItem);
         renderItem(todoItem);
         e.target.reset();
+        
     })
 
 
@@ -29,9 +30,31 @@ window.addEventListener('load', function (e) {
     
 
 })
+document.addEventListener('change',(e)=>{
+if(e.target.type === "checkbox"){
+    let checkboxElem = document.querySelectorAll('input[type = "checkbox"]');
+    for(let i = 0;i<=checkboxElem.length;i++){
+        if(checkboxElem[i] === true){
+            localStorage.todos[i].completed = true;
+        }
+    }
+}
+})
+const deleteALL = document.getElementById('deleteALL');
+deleteALL.addEventListener('click',function(){
+    localStorage.clear();
+    window.location.reload();
+   
+});
+
+
+
+
 
 
 function saveItem(todoItem) {
+     
+    todoItem.completed = false;
 
     if(localStorage.todos) {
         let todosArray = JSON.parse(localStorage.todos);
@@ -40,9 +63,11 @@ function saveItem(todoItem) {
         localStorage.setItem('todos', todosArray);
         return;
     }
+   
 
     let todosArray = JSON.stringify([todoItem]);
-    localStorage.setItem('todos', todosArray)
+    localStorage.setItem('todos', todosArray);
+    localStorage.todos.TaskDone =checkboxElem.checked;
 }
 
 
@@ -70,6 +95,32 @@ function createEmptyTemplate() {
 
     taskWrapper.append(taskHeading);
     taskWrapper.append(taskDescription);
+    const checkButton = document.createElement('input');
+    checkButton.type='checkbox';
+    taskWrapper.append(checkButton);
+    const  removeTask = document.createElement('input');
+    removeTask.setAttribute('type', 'button');
+    removeTask.setAttribute("value", "Удалить");
+    removeTask.setAttribute("id", "removeButton");
+    taskWrapper.appendChild(removeTask);
+    
+    
+    
+   
+    
+
 
     return col;
 }
+
+
+
+
+
+
+
+
+
+
+
+
